@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchor scrolling so sticky nav doesn't cover section headings. */
+    scroll-padding-top: 5rem;
+  }
+
+  /* Respect users who ask for less motion: kill smooth-scroll + long anims.
+     Components also read this via the usePrefersReducedMotion hook to skip 3D. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-ink-900 text-slate-300 font-sans antialiased;
+    background-image: radial-gradient(
+      80% 50% at 50% -10%,
+      rgba(59, 130, 246, 0.12),
+      rgba(5, 6, 10, 0) 60%
+    );
+  }
+
+  ::selection {
+    @apply bg-accent-blue/30 text-white;
+  }
+
+  /* Visible focus ring for keyboard users. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent-cyan ring-offset-2 ring-offset-ink-900;
+  }
+
+  /* Slim, on-brand scrollbar. */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-ink-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-ink-600 rounded-full;
+  }
+}
+
+@layer components {
+  /* Frosted-glass surface used by nav, cards, and chips. */
+  .glass {
+    @apply border border-white/10 bg-white/5 backdrop-blur-md;
+  }
+
+  .gradient-text {
+    @apply bg-accent-gradient bg-clip-text text-transparent;
+  }
+
+  /* Section vertical rhythm + max width for readability. */
+  .section {
+    @apply mx-auto w-full max-w-6xl px-5 py-24 sm:px-8 md:py-32;
+  }
+}
