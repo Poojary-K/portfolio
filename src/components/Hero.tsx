@@ -13,7 +13,21 @@ export default function Hero() {
       id="home"
       className="relative flex min-h-screen items-center justify-center px-5 pt-28 sm:px-8"
     >
-      <div className="mx-auto w-full max-w-4xl text-center">
+      <div className="relative z-10 mx-auto w-full max-w-4xl text-center">
+        {/* Readability backdrop — a soft radial darkening anchored to the hero
+            content itself, so the name/title/CTAs always sit on a clean, high-
+            contrast field regardless of which background decoration is active.
+            Lives behind the content (-z-10 within this stacking context) and is
+            non-interactive so it never blocks the CTAs. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[135%] w-[130%] -translate-x-1/2 -translate-y-1/2"
+          style={{
+            background:
+              "radial-gradient(closest-side, rgba(5,6,10,0.82) 0%, rgba(5,6,10,0.55) 55%, rgba(5,6,10,0) 100%)",
+          }}
+        />
+
         {/* Availability / status pill */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -55,19 +69,10 @@ export default function Hero() {
           <span className="gradient-text">{profile.title}</span>
         </motion.p>
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="mt-1 text-sm text-slate-500"
-        >
-          {profile.positioning} · {profile.yearsExperience}+ years
-        </motion.p>
-
-        <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.32 }}
-          className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg"
+          className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg"
         >
           {profile.valueStatement}
         </motion.p>

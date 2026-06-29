@@ -25,7 +25,7 @@ export default function Navbar() {
           className="font-display text-sm font-bold tracking-wide text-white"
           aria-label="Back to top"
         >
-          PK<span className="gradient-text">.</span>
+          <span className="gradient-text">.</span>
         </a>
 
         {/* Desktop links */}
@@ -35,10 +35,10 @@ export default function Navbar() {
               <a
                 href={`#${item.id}`}
                 className={cn(
-                  "rounded-lg px-3 py-2 text-sm transition-colors",
-                  active === item.id
-                    ? "text-white"
-                    : "text-slate-400 hover:text-white"
+                  // `relative` anchors the absolutely-positioned underline so it
+                  // never changes the link's height (fixes the active "jump").
+                  "relative block rounded-lg px-3 py-2 text-sm transition-colors",
+                  active === item.id ? "text-white" : "text-slate-400 hover:text-white"
                 )}
                 aria-current={active === item.id ? "page" : undefined}
               >
@@ -46,7 +46,7 @@ export default function Navbar() {
                 {active === item.id && (
                   <motion.span
                     layoutId="nav-underline"
-                    className="mx-3 mt-1 block h-[2px] rounded-full bg-accent-gradient"
+                    className="absolute inset-x-3 bottom-1 h-[2px] rounded-full bg-accent-gradient"
                   />
                 )}
               </a>

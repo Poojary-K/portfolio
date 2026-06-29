@@ -1,13 +1,19 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { X, ExternalLink, Github, CheckCircle2 } from "lucide-react";
+import { X, ExternalLink, Github, CheckCircle2, ArrowRight, Lock } from "lucide-react";
 import type { Project } from "../data/portfolio";
 import { accentClasses, cn } from "../lib/utils";
 
 /**
- * Case-study overlay for a selected project. Readability-first: clear
- * sections (role, tools, key work, outcome) over a calm panel. Closes on
- * Escape or backdrop click; locks body scroll while open.
+ * Case-study overlay for a selected project. Readability-first.
+ *
+ * Layout safety (was overflowing the viewport before):
+ *  - overlay centers the panel and scrolls if the panel is taller than screen
+ *  - panel is capped at 90vh and scrolls internally
+ *  - close button lives in a sticky header so it's ALWAYS reachable
+ *
+ * Visual: public projects show a screenshot (or a neutral placeholder);
+ * confidential company work shows an abstract architecture diagram instead.
  */
 export default function ProjectModal({
   project,
@@ -35,7 +41,7 @@ export default function ProjectModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
-      className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-ink-900/80 p-4 backdrop-blur-sm sm:p-8"
+      className="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto bg-ink-900/80 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-label={`${project.title} case study`}
@@ -46,75 +52,138 @@ export default function ProjectModal({
         exit={{ opacity: 0, y: 24, scale: 0.98 }}
         transition={{ type: "spring", duration: 0.4 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative my-8 w-full max-w-2xl rounded-2xl border border-white/10 bg-ink-800 p-6 shadow-glow sm:p-8"
+        className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-ink-800 shadow-glow"
       >
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          className="absolute right-4 top-4 rounded-lg p-2 text-slate-400 transition-colors hover:bg-white/5 hover:text-white"
-        >
-          <X size={20} />
-        </button>
-
-        {/* Optional screenshot — plug into project.image in data/portfolio.ts */}
-        {project.image ? (
-          <img
-            src={project.image}
-            alt={`${project.title} screenshot`}
-            className="mb-6 aspect-video w-full rounded-xl object-cover"
-          />
-        ) : (
-          <div className={cn("mb-6 flex aspect-video w-full items-center justify-center rounded-xl border", a.border, a.bg)}>
-            <span className="font-mono text-xs text-slate-400">screenshot placeholder</span>
-          </div>
-        )}
-
-        <p className={cn("font-mono text-xs uppercase tracking-widest", a.text)}>{project.role}</p>
-        <h3 className="mt-2 font-display text-2xl font-bold text-white">{project.title}</h3>
-        <p className="mt-3 leading-relaxed text-slate-300">{project.description}</p>
-
-        {/* Tools */}
-        <div className="mt-5 flex flex-wrap gap-2">
-          {project.tools.map((t) => (
-            <span key={t} className="rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs text-slate-300">
-              {t}
-            </span>
-          ))}
+        {/* Sticky header keeps the close button reachable while scrolling. */}
+        <div className="sticky top-0 z-20 flex justify-end border-b border-white/5 bg-ink-800/90 px-4 py-3 backdrop-blur">
+          <button
+            onClick={onClose}
+            aria-label="Close case study"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-slate-300 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
+          >
+            <X size={18} />
+          </button>
         </div>
 
-        {/* Key work */}
-        <h4 className="mt-7 font-display text-sm font-semibold text-white">Key work</h4>
-        <ul className="mt-3 space-y-2">
-          {project.highlights.map((h) => (
-            <li key={h} className="flex gap-2.5 text-sm leading-relaxed text-slate-300">
-              <CheckCircle2 size={18} className={cn("mt-0.5 shrink-0", a.text)} />
-              {h}
-            </li>
-          ))}
-        </ul>
+        <div className="px-6 pb-8 pt-4 sm:px-8">
+          {/* Visual: screenshot, architecture diagram, or neutral placeholder. */}
+          <ProjectVisual project={project} />
 
-        {/* Outcome */}
-        <div className={cn("mt-6 rounded-xl border p-4", a.border, a.bg)}>
-          <h4 className="font-display text-sm font-semibold text-white">Outcome</h4>
-          <p className="mt-1 text-sm leading-relaxed text-slate-300">{project.outcome}</p>
-        </div>
+          <p className={cn("mt-6 font-mono text-xs uppercase tracking-widest", a.text)}>
+            {project.role}
+          </p>
+          <h3 className="mt-2 font-display text-2xl font-bold text-white">{project.title}</h3>
+          <p className="mt-3 leading-relaxed text-slate-300">{project.description}</p>
 
-        {/* Links */}
-        {(project.repo || project.live) && (
-          <div className="mt-6 flex flex-wrap gap-3">
-            {project.live && (
-              <a href={project.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-accent-gradient px-4 py-2 text-sm font-semibold text-ink-900">
-                <ExternalLink size={16} /> Live
-              </a>
-            )}
-            {project.repo && (
-              <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2 text-sm font-semibold text-white hover:bg-white/5">
-                <Github size={16} /> Code
-              </a>
-            )}
+          {/* Tools */}
+          <div className="mt-5 flex flex-wrap gap-2">
+            {project.tools.map((t) => (
+              <span
+                key={t}
+                className="rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-1 text-xs text-slate-300"
+              >
+                {t}
+              </span>
+            ))}
           </div>
-        )}
+
+          {/* Key work */}
+          <h4 className="mt-7 font-display text-sm font-semibold text-white">Key work</h4>
+          <ul className="mt-3 space-y-2">
+            {project.highlights.map((h) => (
+              <li key={h} className="flex gap-2.5 text-sm leading-relaxed text-slate-300">
+                <CheckCircle2 size={18} className={cn("mt-0.5 shrink-0", a.text)} />
+                {h}
+              </li>
+            ))}
+          </ul>
+
+          {/* Outcome */}
+          <div className={cn("mt-6 rounded-xl border p-4", a.border, a.bg)}>
+            <h4 className="font-display text-sm font-semibold text-white">Outcome</h4>
+            <p className="mt-1 text-sm leading-relaxed text-slate-300">{project.outcome}</p>
+          </div>
+
+          {/* Links */}
+          {(project.repo || project.live) && (
+            <div className="mt-6 flex flex-wrap gap-3">
+              {project.live && (
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg bg-accent-gradient px-4 py-2 text-sm font-semibold text-ink-900"
+                >
+                  <ExternalLink size={16} /> Live demo
+                </a>
+              )}
+              {project.repo && (
+                <a
+                  href={project.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2 text-sm font-semibold text-white hover:bg-white/5"
+                >
+                  <Github size={16} /> Code
+                </a>
+              )}
+            </div>
+          )}
+        </div>
       </motion.div>
     </motion.div>
+  );
+}
+
+/** Picks the right visual for a project's case study. */
+function ProjectVisual({ project }: { project: Project }) {
+  const a = accentClasses[project.accent];
+
+  // 1) Real screenshot, if provided.
+  if (project.image) {
+    return (
+      <img
+        src={project.image}
+        alt={`${project.title} screenshot`}
+        className="aspect-video w-full rounded-xl object-cover"
+      />
+    );
+  }
+
+  // 2) Confidential company work → abstract architecture diagram (no real UI).
+  if (project.confidential && project.diagram?.length) {
+    return (
+      <div className={cn("rounded-xl border p-5", a.border, a.bg)}>
+        <div className="mb-3 flex items-center gap-2 text-xs text-slate-400">
+          <Lock size={13} className={a.text} />
+          Confidential company work — abstract architecture
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {project.diagram.map((step, i) => (
+            <div key={step} className="flex items-center gap-2">
+              <span className="rounded-lg border border-white/10 bg-ink-900/60 px-3 py-2 text-xs font-medium text-slate-200">
+                {step}
+              </span>
+              {i < project.diagram!.length - 1 && (
+                <ArrowRight size={14} className="shrink-0 text-slate-600" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // 3) Neutral placeholder (public project without a screenshot yet).
+  return (
+    <div
+      className={cn(
+        "flex aspect-video w-full items-center justify-center rounded-xl border",
+        a.border,
+        a.bg
+      )}
+    >
+      <span className="font-mono text-xs text-slate-400">screenshot coming soon</span>
+    </div>
   );
 }

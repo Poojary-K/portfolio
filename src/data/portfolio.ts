@@ -20,7 +20,7 @@ export const profile = {
 export const links = {
   github: "https://github.com/Poojary-K",
   // TODO: replace with your real LinkedIn URL
-  linkedin: "https://www.linkedin.com/",
+  linkedin: "https://www.linkedin.com/in/poojary-karunakar-ramanath-85b894211",
   email: "kotianr002@gmail.com",
   // TODO: drop your resume PDF into /public and point here, e.g. "/Poojary-Karunakar-Resume.pdf"
   resume: "/resume-placeholder.pdf",
@@ -121,11 +121,11 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    id: "fundraising-app",
-    title: "Fundraising Group Full-Stack App",
-    tagline: "End-to-end web app with secure auth.",
+    id: "for-the-society",
+    title: "For The Society",
+    tagline: "Live · End-to-end fundraising app.",
     description:
-      "An end-to-end web application built for a fundraising group, owned across frontend, backend, database, and API flow.",
+      "A live end-to-end web application for a society/fundraising group, owned across frontend, backend, database, and API flow.",
     role: "Full-stack developer & owner",
     tools: ["Angular", "Node.js", "Express.js", "PostgreSQL", "JWT", "REST APIs"],
     highlights: [
@@ -135,49 +135,74 @@ export const projects: Project[] = [
       "Hashed user passwords before storing credentials.",
     ],
     outcome:
-      "Delivered a complete working full-stack app with secure authentication and database-backed workflows.",
+      "Delivered and deployed a complete full-stack app with secure authentication and database-backed workflows.",
     accent: "blue",
-    repo: links.github,
+    live: "http://for-the-society.netlify.app/",
+    image: "/projects/Forthesociety.png",
+  },
+  {
+    id: "spend-tracker",
+    title: "Spend Tracker",
+    tagline: "Live · Personal finance PWA.",
+    description:
+      "A polished personal finance management app — track expenses and income, monitor financial health, and get spending insights. Built solo as a personal product, mobile-first and installable as a PWA. All data stays local in the browser.",
+    role: "Solo developer (personal project)",
+    tools: ["Angular 20", "Bootstrap 5", "RxJS", "PWA", "TypeScript"],
+    highlights: [
+      "Financial dashboard with monthly summaries and health indicators.",
+      "Expense + income tracking with remembered categories and insights.",
+      "Lending/borrowing records and a shared-expense split calculator.",
+      "Data import/export, dark & light themes, and offline-capable PWA.",
+    ],
+    outcome:
+      "Shipped a fast, mobile-first finance app on Netlify with privacy-first local-only storage.",
+    accent: "green",
+    live: "https://devk-spend-tracker.netlify.app/dashboard",
+    image: "/projects/spendtracker.png",
   },
   {
     id: "genai-agent-platform",
     title: "GenAI Agent Platform",
-    tagline: "User-configurable agent workflows.",
+    tagline: "Agent workflows · RAG · Neo4j prompts.",
     description:
-      "A GenAI platform where users configure prompts, tools, MCP integrations, and documents to drive agent workflows. ~1 year of work on an AutoGen-based system.",
+      "A GenAI platform where users configure prompts, tools, MCP integrations, and documents to drive agent workflows. My current focus — RAG pipelines and Neo4j-backed prompt engineering (system prompts that shape specific feature flows).",
     role: "Full-stack engineer — frontend/backend integration",
-    tools: ["Angular", "FastAPI", "AutoGen", "RAG", "MCP Tools", "Embeddings"],
+    tools: ["Angular", "FastAPI", "AutoGen", "RAG", "Neo4j", "MCP Tools", "Embeddings"],
     highlights: [
       "Built product flows around planning, code-writing, and report-generation agents.",
+      "Designed system prompts / prompt engineering for specific feature flows.",
+      "Worked on RAG pipelines, embeddings, and document-context retrieval.",
       "Made agent configuration (prompts, tools, MCP, documents) usable from the UI.",
-      "Integrated frontend experiences with backend orchestration APIs.",
-      "Supported RAG and document-context workflows end to end.",
     ],
     outcome:
-      "Helped build a practical GenAI platform where users could manage agent behavior, tools, and document context.",
+      "Helped build a practical GenAI platform where users manage agent behavior, tools, and document context.",
     accent: "violet",
+    confidential: true,
+    diagram: ["UI / Angular", "FastAPI orchestration", "AutoGen agents", "RAG + Embeddings", "Neo4j", "MCP tools & docs"],
   },
   {
     id: "prometheus-metrics-packages",
-    title: "Prometheus Metrics Packages",
-    tagline: "Reusable observability for Node & Python.",
+    title: "Observability Metrics Packages",
+    tagline: "Reusable npm & pip for Prometheus.",
     description:
-      "Reusable npm and pip packages that expose Prometheus metrics across Node.js and Python services, eliminating duplicate instrumentation code.",
+      "Reusable npm and pip packages that expose Prometheus metrics across Node.js and Python services in Docker/IoT-oriented systems, eliminating duplicate instrumentation code.",
     role: "Developer of reusable observability tooling",
-    tools: ["Node.js", "Express.js", "Python", "Prometheus", "YAML"],
+    tools: ["Node.js", "Express.js", "Python", "Prometheus", "Docker", "YAML"],
     highlights: [
       "Built Express middleware (accepts an app instance) to track API calls.",
       "Captured route, method, status code, request count, and response behavior.",
-      "Exposed metrics for Prometheus scraping.",
+      "Exposed a /metrics endpoint for Prometheus scraping.",
       "Tuned scrape intervals and service targets via YAML.",
     ],
     outcome: "Reduced duplicate metrics code across services and improved observability consistency.",
-    accent: "green",
+    accent: "cyan",
+    confidential: true,
+    diagram: ["Node / Python service", "Metrics middleware", "/metrics endpoint", "Prometheus scrape", "Dashboards"],
   },
   {
     id: "production-cicd",
-    title: "Production Debugging & CI/CD Quality Gates",
-    tagline: "Reliability, tests, and release confidence.",
+    title: "Production Debugging & CI/CD Gates",
+    tagline: "Reliability, tests, release confidence.",
     description:
       "Maintenance and debugging work across production applications, plus CI/CD quality gates that block releases on failing tests.",
     role: "Full-stack engineer",
@@ -189,7 +214,9 @@ export const projects: Project[] = [
       "Investigated container, pod, port, and readiness deployment issues.",
     ],
     outcome: "Improved reliability, test coverage, and release confidence.",
-    accent: "cyan",
+    accent: "blue",
+    confidential: true,
+    diagram: ["Browser", "API services", "Databases", "Docker / K8s", "GitLab CI gates"],
   },
 ];
 
@@ -200,7 +227,7 @@ export type TimelineItem = {
   tags: string[];
 };
 
-// TODO: adjust years to your real timeline.
+// Chronological — oldest first. TODO: adjust exact years if needed.
 export const timeline: TimelineItem[] = [
   {
     period: "2023",
@@ -210,31 +237,31 @@ export const timeline: TimelineItem[] = [
     tags: ["Education"],
   },
   {
-    period: "2023 — Present",
-    title: "Software Engineer",
+    period: "First role · ~9 months",
+    title: "MEAN-Stack Application",
     description:
-      "Building frontend and backend features across Angular, Node.js, Express, MongoDB, and PostgreSQL. Production feature development, maintenance, and debugging.",
-    tags: ["Angular", "Node.js", "PostgreSQL", "MongoDB"],
+      "Started my engineering career building features across a MEAN-stack app — MongoDB, Express, Angular, and Node.js. Frontend + backend development, maintenance, and bug fixes.",
+    tags: ["MongoDB", "Express", "Angular", "Node.js"],
   },
   {
-    period: "~1 year",
-    title: "GenAI Agent Platform",
+    period: "Next",
+    title: "Observability · Prometheus & Docker",
     description:
-      "Worked on an AutoGen-based GenAI application — agent workflows, RAG, MCP tools, and user-configurable agent behavior with a FastAPI backend.",
-    tags: ["AutoGen", "RAG", "FastAPI", "MCP"],
+      "Moved onto Prometheus / Docker work on IoT-oriented systems. Built reusable npm and pip metrics packages so multiple Node.js and Python services could expose Prometheus metrics without duplicating instrumentation.",
+    tags: ["Prometheus", "Docker", "npm + pip", "IoT"],
   },
   {
-    period: "Ongoing",
-    title: "Observability & Platform",
+    period: "Now",
+    title: "GenAI · RAG & Agent Platform",
     description:
-      "Built reusable Prometheus metrics packages for Node.js and Python, and worked with Docker, Kubernetes, GitLab CI/CD, and Cypress tests.",
-    tags: ["Prometheus", "Docker", "Kubernetes", "CI/CD"],
+      "Currently working on a GenAI agent platform — RAG pipelines and Neo4j-backed prompt engineering (system prompts that shape specific feature flows), built around AutoGen with a FastAPI backend and an Angular frontend.",
+    tags: ["RAG", "Neo4j", "Prompt Engineering", "AutoGen", "FastAPI"],
   },
   {
-    period: "Ongoing",
+    period: "Throughout",
     title: "Ownership & Mentoring",
     description:
-      "Shipped a personal full-stack fundraising app, started reviewing PRs, mentoring juniors, and breaking vague requirements into technical tasks.",
+      "Shipped personal products (For The Society, Spend Tracker), reviewed PRs, mentored juniors, and broke vague requirements into technical tasks with senior validation.",
     tags: ["PR Reviews", "Mentoring", "Planning"],
   },
 ];

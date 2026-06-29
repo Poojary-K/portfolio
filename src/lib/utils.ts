@@ -3,14 +3,12 @@ export function cn(...classes: Array<string | false | null | undefined>): string
   return classes.filter(Boolean).join(" ");
 }
 
-/** The three selectable 3D background themes. */
-export type BgTheme = "neo" | "code" | "particles";
-
-export const bgThemes: { id: BgTheme; label: string; hint: string }[] = [
-  { id: "neo", label: "Knowledge graph", hint: "Relationship graph (Neo4j-style)" },
-  { id: "code", label: "Floating code", hint: "Drifting code chunks" },
-  { id: "particles", label: "Particle field", hint: "Connected particle network" },
-];
+/**
+ * Local monospace font for in-canvas 3D text (Drei <Text>). Shipped in
+ * /public/fonts so labels/code render reliably even offline — Drei's default
+ * font would otherwise depend on a CDN. Swap the file to restyle 3D text.
+ */
+export const MONO_FONT = "/fonts/JetBrainsMono-Regular.woff";
 
 /** Map an accent key to its hex value (used for inline styles / 3D). */
 export const accentHex: Record<"cyan" | "blue" | "violet" | "green", string> = {
